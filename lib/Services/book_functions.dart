@@ -41,3 +41,28 @@ Future kitapligaKitapSil(bookName) async {
     "bookUsers": FieldValue.arrayRemove([userID])
   });
 }
+
+Future<String> puanHesapla(kitapAdi) async {
+  try {
+    double toplamPuan = 0.0;
+    double kitapOrt;
+// ignore: unused_local_variable
+    var kitapPuanlari = await Firestore.instance
+        .collection("books")
+        .document(kitapAdi)
+        .collection("rating")
+        .getDocuments();
+    kitapPuanlari.documents.forEach((doc) {
+      toplamPuan = toplamPuan + doc["bookRating"];
+    });
+    kitapOrt = toplamPuan / kitapPuanlari.documents.length;
+    if (kitapOrt >= 0.0) {
+      return kitapOrt.toString();
+    } else {
+      return "0.0";
+    }
+  } catch (e) {
+    print(e);
+    return "0.0";
+  }
+}

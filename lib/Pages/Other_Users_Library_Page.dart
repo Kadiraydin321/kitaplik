@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kitaplik/Pages/Book_Page.dart';
+import 'package:kitaplik/Services/book_functions.dart';
 import 'package:kitaplik/Services/filter.dart';
 import 'package:kitaplik/Services/global_veriable.dart';
 
@@ -24,7 +25,7 @@ class _OtherLibraryPageState extends State<OtherLibraryPage> {
             .collection("users")
             .document(widget.userID)
             .get();
-            setState(() {});
+        setState(() {});
       } catch (e) {
         print(e);
       }
@@ -93,9 +94,9 @@ class _OtherLibraryPageState extends State<OtherLibraryPage> {
                       child: Column(
                         children: [
                           ClipOval(
-                              child: Image.network(user["user_photo"],
+                              child: Image.network(user==null? "https://developers.google.com/web/images/contributors/no-photo.jpg": user["user_photo"],
                                   width: 100, height: 100, fit: BoxFit.cover)),
-                          Text(user["user_name"],
+                          Text(user==null? "":user["user_name"],
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -328,6 +329,24 @@ class _OtherLibraryPageState extends State<OtherLibraryPage> {
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8, right: 8, top: 8),
+                                  child: FutureBuilder(
+                                    future: puanHesapla(kitaplar["bookName"]),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Text(
+                                          "Puan: " + snapshot.data,
+                                          style: TextStyle(color: Colors.grey),
+                                        );
+                                      } else {
+                                        return SizedBox();
+                                      }
+                                    },
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -382,54 +401,58 @@ class _OtherLibraryPageState extends State<OtherLibraryPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(
-                            flex: 4,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: CachedNetworkImage(
-                                imageUrl: kitaplar["bookImage"],
-                                height:
-                                    MediaQuery.of(context).size.height *
-                                        0.14,
-                                fit: BoxFit.cover,
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                              ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: CachedNetworkImage(
+                              imageUrl: kitaplar["bookImage"],
+                              height: MediaQuery.of(context).size.height *
+                                  0.14,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                             ),
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: Text(
-                                kitaplar["bookName"].toString().length > 23
-                                    ? kitaplar["bookName"]
-                                            .toString()
-                                            .substring(0, 23) +
-                                        "..."
-                                    : kitaplar["bookName"],
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
                             child: Text(
-                              kitaplar["bookAuthor"].toString().length > 23
-                                  ? kitaplar["bookAuthor"]
+                              kitaplar["bookName"].toString().length > 23
+                                  ? kitaplar["bookName"]
                                           .toString()
                                           .substring(0, 23) +
                                       "..."
-                                  : kitaplar["bookAuthor"] +
-                                      "\n" +
-                                      categoryFilter(kitaplar["bookCategory"]),
-                              style: TextStyle(color: Colors.grey),
+                                  : kitaplar["bookName"],
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                               textAlign: TextAlign.center,
                             ),
+                          ),
+                          Text(
+                            kitaplar["bookAuthor"].toString().length > 23
+                                ? kitaplar["bookAuthor"]
+                                        .toString()
+                                        .substring(0, 23) +
+                                    "..."
+                                : kitaplar["bookAuthor"] +
+                                    "\n" +
+                                    categoryFilter(kitaplar["bookCategory"]),
+                            style: TextStyle(color: Colors.grey),
+                            textAlign: TextAlign.center,
+                          ),
+                          FutureBuilder(
+                            future: puanHesapla(kitaplar["bookName"]),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                  "Puan: " + snapshot.data,
+                                  style: TextStyle(color: Colors.grey),
+                                );
+                              } else {
+                                return SizedBox();
+                              }
+                            },
                           ),
                         ],
                       ),

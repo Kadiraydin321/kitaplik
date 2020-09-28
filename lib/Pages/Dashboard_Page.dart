@@ -21,10 +21,10 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [Color(0xFF202639),Color(0xFF3f4c77)])
-      ),
+          gradient:
+              LinearGradient(colors: [Color(0xFF202639), Color(0xFF3f4c77)])),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
           appBar: AppBar(
             title: Text("Ana Sayfa"),
             centerTitle: true,
@@ -148,10 +148,13 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: InkWell(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  BookPage(kitaplar["bookName"])));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      BookPage(kitaplar["bookName"])))
+                          .then((value) {
+                        setState(() {});
+                      });
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,6 +212,24 @@ class _DashboardPageState extends State<DashboardPage> {
                                   style: TextStyle(color: Colors.grey),
                                 ),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8, right: 8, top: 8),
+                                child: FutureBuilder(
+                                  future: puanHesapla(kitaplar["bookName"]),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(
+                                        "Puan: " + snapshot.data,
+                                        style: TextStyle(color: Colors.grey),
+                                      );
+                                    } else {
+                                      return SizedBox();
+                                    }
+                                  },
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -303,9 +324,12 @@ class _DashboardPageState extends State<DashboardPage> {
           borderRadius: BorderRadius.circular(10),
           onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => BookPage(kitap[i]["bookName"])));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BookPage(kitap[i]["bookName"])))
+                .then((value) {
+              setState(() {});
+            });
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),

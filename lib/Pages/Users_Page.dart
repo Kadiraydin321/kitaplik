@@ -50,8 +50,15 @@ class _UsersPageState extends State<UsersPage> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                color: Color(0xFF68b0ab),
-                                borderRadius: BorderRadius.circular(20)),
+                              color: Color(0xFF68b0ab),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black38,
+                                    offset: Offset(7.0, 7.0),
+                                    blurRadius: 10)
+                              ],
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Row(
@@ -60,12 +67,15 @@ class _UsersPageState extends State<UsersPage> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   ClipOval(
-                                      child: Image.network(user["user_photo"],
+                                      child: Image.network(
+                                          user == null
+                                              ? "https://developers.google.com/web/images/contributors/no-photo.jpg"
+                                              : user["user_photo"],
                                           width: 70,
                                           height: 70,
                                           fit: BoxFit.cover)),
                                   Text(
-                                    user["user_name"],
+                                    user == null ? "" : user["user_name"],
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 22),
                                   ),

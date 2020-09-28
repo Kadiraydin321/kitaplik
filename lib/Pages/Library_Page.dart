@@ -303,6 +303,24 @@ class LibraryPageState extends State<LibraryPage> {
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
+                                 Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8, right: 8, top: 8),
+                                  child: FutureBuilder(
+                                  future: puanHesapla(kitaplar["bookName"]),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(
+                                        "Puan: " + snapshot.data,
+                                        style: TextStyle(color: Colors.grey),
+                                      );
+                                    } else {
+                                      return SizedBox();
+                                    }
+                                  },
+                                ),
+                                  ),
                               ],
                             ),
                           ),
@@ -374,76 +392,81 @@ class LibraryPageState extends State<LibraryPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(
-                            flex: 4,
-                            child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.topCenter,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: CachedNetworkImage(
-                                      imageUrl: kitaplar["bookImage"],
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.14,
-                                      fit: BoxFit.cover,
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                    ),
+                          Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: CachedNetworkImage(
+                                    imageUrl: kitaplar["bookImage"],
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                            0.14,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
                                   ),
                                 ),
-                                Align(
-                                    alignment: Alignment.topRight,
-                                    child: InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            kitapligaKitapSil(
-                                                kitaplar["bookName"]);
-                                          });
-                                        },
-                                        child: Icon(
-                                          FontAwesomeIcons.times,
-                                          color: Colors.white,
-                                          size: 17,
-                                        )))
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: Text(
-                                kitaplar["bookName"].toString().length > 23
-                                    ? kitaplar["bookName"]
-                                            .toString()
-                                            .substring(0, 23) +
-                                        "..."
-                                    : kitaplar["bookName"],
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
                               ),
-                            ),
+                              Align(
+                                  alignment: Alignment.topRight,
+                                  child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          kitapligaKitapSil(
+                                              kitaplar["bookName"]);
+                                        });
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.times,
+                                        color: Colors.white,
+                                        size: 17,
+                                      )))
+                            ],
                           ),
-                          Expanded(
-                            flex: 2,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
                             child: Text(
-                              kitaplar["bookAuthor"].toString().length > 23
-                                  ? kitaplar["bookAuthor"]
+                              kitaplar["bookName"].toString().length > 23
+                                  ? kitaplar["bookName"]
                                           .toString()
                                           .substring(0, 23) +
                                       "..."
-                                  : kitaplar["bookAuthor"] +
-                                      "\n" +
-                                      categoryFilter(kitaplar["bookCategory"]),
-                              style: TextStyle(color: Colors.grey),
+                                  : kitaplar["bookName"],
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                               textAlign: TextAlign.center,
                             ),
                           ),
+                          Text(
+                            kitaplar["bookAuthor"].toString().length > 23
+                                ? kitaplar["bookAuthor"]
+                                        .toString()
+                                        .substring(0, 23) +
+                                    "..."
+                                : kitaplar["bookAuthor"] +
+                                    "\n" +
+                                    categoryFilter(kitaplar["bookCategory"]),
+                            style: TextStyle(color: Colors.grey),
+                            textAlign: TextAlign.center,
+                          ),
+                          FutureBuilder(
+                                  future: puanHesapla(kitaplar["bookName"]),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(
+                                        "Puan: " + snapshot.data,
+                                        style: TextStyle(color: Colors.grey),
+                                      );
+                                    } else {
+                                      return SizedBox();
+                                    }
+                                  },
+                                ),
                         ],
                       ),
                     ),

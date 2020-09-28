@@ -55,16 +55,17 @@ class _BookPageState extends State<BookPage> {
                       Padding(
                         padding: EdgeInsets.only(right: 10),
                         child: InkWell(
-                          onTap: (){
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    BookComments(kitap["bookName"]))).then((value) {
-                        setState(() {});
-                      });
-                          },
-                          child: Icon(FontAwesomeIcons.solidCommentDots)),
+                            onTap: () {
+                              Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookComments(kitap["bookName"])))
+                                  .then((value) {
+                                setState(() {});
+                              });
+                            },
+                            child: Icon(FontAwesomeIcons.solidCommentDots)),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
@@ -149,6 +150,26 @@ class _BookPageState extends State<BookPage> {
                                       fontSize: 15, color: Colors.white),
                                   textAlign: TextAlign.center,
                                 )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8, right: 8, bottom: 10),
+                            child:FutureBuilder(
+                                  future: puanHesapla(widget.kitapAdi),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(
+                                        "Puan: " + snapshot.data,
+                                        style: TextStyle(
+                                  fontSize: 15, color: Colors.white),
+                              textAlign: TextAlign.center,
+                                      );
+                                    } else {
+                                      return SizedBox();
+                                    }
+                                  },
+                                ),
                           ),
                           Container(
                             decoration: BoxDecoration(

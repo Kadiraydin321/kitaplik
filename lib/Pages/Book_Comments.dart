@@ -77,8 +77,15 @@ class _BookCommentsState extends State<BookComments> {
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(25),
-                                        color: Color(0xFF68b0ab)),
+                                      borderRadius: BorderRadius.circular(25),
+                                      color: Color(0xFF68b0ab),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.black38,
+                                            offset: Offset(7.0, 7.0),
+                                            blurRadius: 10)
+                                      ],
+                                    ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
@@ -170,9 +177,8 @@ class _BookCommentsState extends State<BookComments> {
                       child: Center(
                           child: Text(
                         "Bu kitaba yorum yapılmamış. İlk yorumu siz yapın.",
-                        style: TextStyle(color: Colors.white,
-                        fontSize: 20
-                        ),textAlign:TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        textAlign: TextAlign.center,
                       )),
                     );
                   }
