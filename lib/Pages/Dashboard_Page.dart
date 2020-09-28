@@ -289,7 +289,17 @@ class _DashboardPageState extends State<DashboardPage> {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 List kitap = snapshot.data.documents;
-                if (kitap.length == 0) {
+                if (kitap.length != 0) {
+                  bosKitaplik = false;
+                  return Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: ListView(
+                      children: listele(context, kitap),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                    ),
+                  );
+                } else {
                   bosKitaplik = true;
                   return SizedBox(
                     child: Center(
@@ -297,15 +307,6 @@ class _DashboardPageState extends State<DashboardPage> {
                         "Kitaplığınıza kitap ekleyiniz...",
                         style: TextStyle(color: Colors.white),
                       ),
-                    ),
-                  );
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: ListView(
-                      children: listele(context, kitap),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
                     ),
                   );
                 }
