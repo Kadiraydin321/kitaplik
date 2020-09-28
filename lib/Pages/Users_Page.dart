@@ -66,7 +66,7 @@ class _UsersPageState extends State<UsersPage> {
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     ClipOval(
                                         child: Image.network(
