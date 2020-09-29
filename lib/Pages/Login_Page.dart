@@ -23,18 +23,25 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: _signInButton(context)));
+    return Container(
+      decoration: BoxDecoration(
+          gradient:
+              LinearGradient(colors: [Color(0xFF202639), Color(0xFF3f4c77)])),
+      child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(child: _signInButton(context))),
+    );
   }
 
   Widget _signInButton(context) {
     return OutlineButton(
-      splashColor: Colors.grey,
+      splashColor: Colors.white,
       onPressed: () {
         onGoogleSignIn(context);
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
-      borderSide: BorderSide(color: Colors.grey),
+      borderSide: BorderSide(color: Colors.white),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
@@ -51,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                 'Google ile devam et.',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.grey,
+                  color: Colors.white70,
                 ),
               ),
             )
