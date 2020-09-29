@@ -66,9 +66,12 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                               InkWell(
                                   onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => LibraryPage())),
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LibraryPage())).then((value) {
+                                        setState(() {});
+                                      }),
                                   child: Icon(
                                     FontAwesomeIcons.angleRight,
                                     size: 23,
@@ -108,9 +111,12 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                               InkWell(
                                   onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => AllBooks())),
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AllBooks())).then((value) {
+                                        setState(() {});
+                                      }),
                                   child: Icon(
                                     FontAwesomeIcons.angleRight,
                                     size: 23,
@@ -308,7 +314,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   return SizedBox(
                     child: Center(
                       child: Text(
-                        "Kitaplığınıza kitap ekleyiniz...",
+                        "Kitaplığına kitap ekleme zamanı.",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

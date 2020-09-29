@@ -48,7 +48,9 @@ class _UsersPageState extends State<UsersPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          OtherLibraryPage(user.documentID)));
+                                          OtherLibraryPage(user.documentID))).then((value) {
+                          setState(() {});
+                        });
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -76,10 +78,17 @@ class _UsersPageState extends State<UsersPage> {
                                             width: 70,
                                             height: 70,
                                             fit: BoxFit.cover)),
-                                    Text(
-                                      user == null ? "" : user["user_name"],
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 22),
+                                    Container(
+                                      constraints: BoxConstraints(
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.6),
+                                      child: Text(
+                                        user == null ? "" : user["user_name"],
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 22),
+                                      ),
                                     ),
                                     Icon(
                                       FontAwesomeIcons.angleRight,

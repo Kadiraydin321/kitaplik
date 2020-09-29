@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kitaplik/Pages/All_Books.dart';
 import 'package:kitaplik/Pages/Book_Page.dart';
 import 'package:kitaplik/Services/book_functions.dart';
 import 'package:kitaplik/Services/filter.dart';
@@ -227,127 +228,157 @@ class LibraryPageState extends State<LibraryPage> {
                 .getDocuments(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            return ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var kitaplar = snapshot.data.documents[index];
-                  return Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                    child: InkWell(
+            if (snapshot.data.documents.length != 0) {
+              return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var kitaplar = snapshot.data.documents[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, bottom: 10),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          BookPage(kitaplar["bookName"])))
+                              .then((value) {
+                            setState(() {});
+                          });
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 8, bottom: 8),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: CachedNetworkImage(
+                                    imageUrl: kitaplar["bookImage"],
+                                    height: MediaQuery.of(context).size.height *
+                                        0.14,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 9,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(left: 8, top: 8),
+                                    child: Text(
+                                      kitaplar["bookName"].toString().length >
+                                              60
+                                          ? kitaplar["bookName"]
+                                                  .toString()
+                                                  .substring(0, 60) +
+                                              "..."
+                                          : kitaplar["bookName"],
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8, right: 8, top: 8),
+                                    child: Text(
+                                      kitaplar["bookAuthor"],
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8, right: 8, top: 8),
+                                    child: Text(
+                                      categoryFilter(kitaplar["bookCategory"]),
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8, right: 8, top: 8),
+                                    child: FutureBuilder(
+                                      future: puanHesapla(kitaplar["bookName"]),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot snapshot) {
+                                        if (snapshot.hasData) {
+                                          return Text(
+                                            "Puan: " + snapshot.data,
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          );
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      kitapligaKitapSil(kitaplar["bookName"]);
+                                    });
+                                  },
+                                  child: Icon(
+                                    FontAwesomeIcons.times,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+            } else {
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "Kitaplığına kitap ekleme zamanı.",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  InkWell(
                       onTap: () {
                         Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        BookPage(kitaplar["bookName"])))
+                                    builder: (context) => AllBooks()))
                             .then((value) {
                           setState(() {});
                         });
                       },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8, bottom: 8),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: CachedNetworkImage(
-                                  imageUrl: kitaplar["bookImage"],
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.14,
-                                  fit: BoxFit.cover,
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 9,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, top: 8),
-                                  child: Text(
-                                    kitaplar["bookName"].toString().length > 60
-                                        ? kitaplar["bookName"]
-                                                .toString()
-                                                .substring(0, 60) +
-                                            "..."
-                                        : kitaplar["bookName"],
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8, right: 8, top: 8),
-                                  child: Text(
-                                    kitaplar["bookAuthor"],
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8, right: 8, top: 8),
-                                  child: Text(
-                                    categoryFilter(kitaplar["bookCategory"]),
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8, right: 8, top: 8),
-                                  child: FutureBuilder(
-                                    future: puanHesapla(kitaplar["bookName"]),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot snapshot) {
-                                      if (snapshot.hasData) {
-                                        return Text(
-                                          "Puan: " + snapshot.data,
-                                          style: TextStyle(color: Colors.grey),
-                                        );
-                                      } else {
-                                        return Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    kitapligaKitapSil(kitaplar["bookName"]);
-                                  });
-                                },
-                                child: Icon(
-                                  FontAwesomeIcons.times,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                });
+                      child: Icon(
+                        FontAwesomeIcons.angleRight,
+                        color: Colors.white,
+                      ))
+                ],
+              );
+            }
           } else {
             return Center(
               child: CircularProgressIndicator(),
@@ -375,108 +406,139 @@ class LibraryPageState extends State<LibraryPage> {
                 .getDocuments(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            return GridView.builder(
-                itemCount: snapshot.data.documents.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemBuilder: (BuildContext context, int index) {
-                  var kitaplar = snapshot.data.documents[index];
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  BookPage(kitaplar["bookName"])));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, bottom: 10, top: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Stack(
-                            children: [
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
-                                  child: CachedNetworkImage(
-                                    imageUrl: kitaplar["bookImage"],
-                                    height: MediaQuery.of(context).size.height *
-                                        0.14,
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
+            if (snapshot.data.documents.length != 0) {
+              return GridView.builder(
+                  itemCount: snapshot.data.documents.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemBuilder: (BuildContext context, int index) {
+                    var kitaplar = snapshot.data.documents[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        BookPage(kitaplar["bookName"])))
+                            .then((value) {
+                          setState(() {});
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, bottom: 10, top: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topCenter,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: CachedNetworkImage(
+                                      imageUrl: kitaplar["bookImage"],
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.14,
+                                      fit: BoxFit.cover,
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    ),
                                   ),
                                 ),
+                                Align(
+                                    alignment: Alignment.topRight,
+                                    child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            kitapligaKitapSil(
+                                                kitaplar["bookName"]);
+                                          });
+                                        },
+                                        child: Icon(
+                                          FontAwesomeIcons.times,
+                                          color: Colors.white,
+                                          size: 17,
+                                        )))
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Text(
+                                kitaplar["bookName"].toString().length > 23
+                                    ? kitaplar["bookName"]
+                                            .toString()
+                                            .substring(0, 23) +
+                                        "..."
+                                    : kitaplar["bookName"],
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              Align(
-                                  alignment: Alignment.topRight,
-                                  child: InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          kitapligaKitapSil(
-                                              kitaplar["bookName"]);
-                                        });
-                                      },
-                                      child: Icon(
-                                        FontAwesomeIcons.times,
-                                        color: Colors.white,
-                                        size: 17,
-                                      )))
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text(
-                              kitaplar["bookName"].toString().length > 23
-                                  ? kitaplar["bookName"]
+                            ),
+                            Text(
+                              kitaplar["bookAuthor"].toString().length > 23
+                                  ? kitaplar["bookAuthor"]
                                           .toString()
                                           .substring(0, 23) +
                                       "..."
-                                  : kitaplar["bookName"],
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  : kitaplar["bookAuthor"] +
+                                      "\n" +
+                                      categoryFilter(kitaplar["bookCategory"]),
+                              style: TextStyle(color: Colors.grey),
                               textAlign: TextAlign.center,
                             ),
-                          ),
-                          Text(
-                            kitaplar["bookAuthor"].toString().length > 23
-                                ? kitaplar["bookAuthor"]
-                                        .toString()
-                                        .substring(0, 23) +
-                                    "..."
-                                : kitaplar["bookAuthor"] +
-                                    "\n" +
-                                    categoryFilter(kitaplar["bookCategory"]),
-                            style: TextStyle(color: Colors.grey),
-                            textAlign: TextAlign.center,
-                          ),
-                          FutureBuilder(
-                            future: puanHesapla(kitaplar["bookName"]),
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasData) {
-                                return Text(
-                                  "Puan: " + snapshot.data,
-                                  style: TextStyle(color: Colors.grey),
-                                );
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            },
-                          ),
-                        ],
+                            FutureBuilder(
+                              future: puanHesapla(kitaplar["bookName"]),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    "Puan: " + snapshot.data,
+                                    style: TextStyle(color: Colors.grey),
+                                  );
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                });
+                    );
+                  });
+            } else {
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "Kitaplığına kitap ekleme zamanı.",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AllBooks()))
+                            .then((value) {
+                          setState(() {});
+                        });
+                      },
+                      child: Icon(
+                        FontAwesomeIcons.angleRight,
+                        color: Colors.white,
+                      ))
+                ],
+              );
+            }
           } else {
             return Center(
               child: CircularProgressIndicator(),

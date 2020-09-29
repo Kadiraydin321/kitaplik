@@ -14,14 +14,16 @@ class _LoginPageState extends State<LoginPage> {
   void onGoogleSignIn(BuildContext context) async {
     FirebaseUser user = await handleSignIn();
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DashboardPage()));
+            context, MaterialPageRoute(builder: (context) => DashboardPage()))
+        .then((value) {
+      setState(() {});
+    });
     my_user = user;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(child: _signInButton(context)));
+    return Scaffold(body: Center(child: _signInButton(context)));
   }
 
   Widget _signInButton(context) {
@@ -39,7 +41,10 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset("assets/images/google_logo.png",height: 35,),
+            Image.asset(
+              "assets/images/google_logo.png",
+              height: 35,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(

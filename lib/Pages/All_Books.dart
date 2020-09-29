@@ -386,10 +386,13 @@ class _AllBooksState extends State<AllBooks> {
                     onTap: () {
                       print(kitaplar["bookName"]);
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  BookPage(kitaplar["bookName"])));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      BookPage(kitaplar["bookName"])))
+                          .then((value) {
+                        setState(() {});
+                      });
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(
