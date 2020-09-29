@@ -154,22 +154,24 @@ class _BookPageState extends State<BookPage> {
                           Padding(
                             padding: const EdgeInsets.only(
                                 left: 8, right: 8, bottom: 10),
-                            child:FutureBuilder(
-                                  future: puanHesapla(widget.kitapAdi),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Text(
-                                        "Puan: " + snapshot.data,
-                                        style: TextStyle(
-                                  fontSize: 15, color: Colors.white),
-                              textAlign: TextAlign.center,
-                                      );
-                                    } else {
-                                      return SizedBox();
-                                    }
-                                  },
-                                ),
+                            child: FutureBuilder(
+                              future: puanHesapla(widget.kitapAdi),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    "Puan: " + snapshot.data,
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  );
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              },
+                            ),
                           ),
                           Container(
                             decoration: BoxDecoration(

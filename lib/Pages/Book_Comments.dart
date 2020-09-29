@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kitaplik/Pages/Book_Rating.dart';
+import 'package:kitaplik/Services/global_veriable.dart';
 
 class BookComments extends StatefulWidget {
   final String kitapAdi;
@@ -11,6 +12,38 @@ class BookComments extends StatefulWidget {
 }
 
 class _BookCommentsState extends State<BookComments> {
+  showAlertDialog(BuildContext context) {
+    Widget silButonu = FlatButton(
+      child: Text("Yorumu Sil"),
+      onPressed: () {
+        Firestore.instance
+            .collection("books")
+            .document(widget.kitapAdi)
+            .collection("rating")
+            .document(my_user.uid)
+            .delete();
+        setState(() {});
+        Navigator.pop(context);
+      },
+    );
+    Widget silmeButonu = FlatButton(
+      child: Text("Yorumu Silme"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      content: Text("Yorumu silmek istediğinizden emin misiniz?"),
+      actions: [silButonu, silmeButonu],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return NotificationListener<OverscrollIndicatorNotification>(
@@ -86,87 +119,100 @@ class _BookCommentsState extends State<BookComments> {
                                             blurRadius: 10)
                                       ],
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ClipOval(
-                                              child: Image.network(
-                                                  user["user_photo"],
-                                                  width: 60,
-                                                  height: 60,
-                                                  fit: BoxFit.cover)),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 10),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.75,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        user["user_name"],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 8.0),
-                                                        child: Text(
-                                                          "Puan: " +
-                                                              yorumlar[
-                                                                      "bookRating"]
-                                                                  .toString()[0],
+                                    child: InkWell(
+                                      onTap: () {
+                                        yorumlar.documentID == my_user.uid
+                                            ? showAlertDialog(context)
+                                            : () {}();
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ClipOval(
+                                                child: Image.network(
+                                                    user["user_photo"],
+                                                    width: 60,
+                                                    height: 60,
+                                                    fit: BoxFit.cover)),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.75,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          user["user_name"],
                                                           style: TextStyle(
                                                               color:
-                                                                  Colors.white,
+                                                                  Colors.black,
                                                               fontSize: 18),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.75,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 5),
-                                                    child: Text(
-                                                      yorumlar["bookComment"],
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 8.0),
+                                                          child: Text(
+                                                            "Puan: " +
+                                                                yorumlar[
+                                                                        "bookRating"]
+                                                                    .toString()[0],
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 18),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                )
-                                              ],
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.75,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 5),
+                                                      child: Text(
+                                                        yorumlar["bookComment"],
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black54,
+                                                            fontSize: 18),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 );
                               } else {
-                                return SizedBox();
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
                               }
                             },
                           );
@@ -183,7 +229,9 @@ class _BookCommentsState extends State<BookComments> {
                     );
                   }
                 } else {
-                  return SizedBox();
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
               },
             ),

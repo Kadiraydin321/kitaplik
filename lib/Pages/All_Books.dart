@@ -305,7 +305,9 @@ class _AllBooksState extends State<AllBooks> {
                                           style: TextStyle(color: Colors.grey),
                                         );
                                       } else {
-                                        return SizedBox();
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
                                       }
                                     },
                                   ),
@@ -353,7 +355,9 @@ class _AllBooksState extends State<AllBooks> {
                   );
                 });
           } else {
-            return SizedBox();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),
@@ -402,9 +406,8 @@ class _AllBooksState extends State<AllBooks> {
                                   borderRadius: BorderRadius.circular(5),
                                   child: CachedNetworkImage(
                                     imageUrl: kitaplar["bookImage"],
-                                    height:
-                                        MediaQuery.of(context).size.height *
-                                            0.14,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.14,
                                     fit: BoxFit.cover,
                                     errorWidget: (context, url, error) =>
                                         Icon(Icons.error),
@@ -471,15 +474,17 @@ class _AllBooksState extends State<AllBooks> {
                           ),
                           FutureBuilder(
                             future: puanHesapla(kitaplar["bookName"]),
-                            builder: (BuildContext context,
-                                AsyncSnapshot snapshot) {
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
                               if (snapshot.hasData) {
                                 return Text(
                                   "Puan: " + snapshot.data,
                                   style: TextStyle(color: Colors.grey),
                                 );
                               } else {
-                                return SizedBox();
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
                               }
                             },
                           ),
@@ -489,7 +494,9 @@ class _AllBooksState extends State<AllBooks> {
                   );
                 });
           } else {
-            return SizedBox();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),

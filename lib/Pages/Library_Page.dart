@@ -303,24 +303,26 @@ class LibraryPageState extends State<LibraryPage> {
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
-                                 Padding(
+                                Padding(
                                   padding: const EdgeInsets.only(
                                       left: 8, right: 8, top: 8),
                                   child: FutureBuilder(
-                                  future: puanHesapla(kitaplar["bookName"]),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Text(
-                                        "Puan: " + snapshot.data,
-                                        style: TextStyle(color: Colors.grey),
-                                      );
-                                    } else {
-                                      return SizedBox();
-                                    }
-                                  },
-                                ),
+                                    future: puanHesapla(kitaplar["bookName"]),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Text(
+                                          "Puan: " + snapshot.data,
+                                          style: TextStyle(color: Colors.grey),
+                                        );
+                                      } else {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    },
                                   ),
+                                ),
                               ],
                             ),
                           ),
@@ -347,7 +349,9 @@ class LibraryPageState extends State<LibraryPage> {
                   );
                 });
           } else {
-            return SizedBox();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),
@@ -400,9 +404,8 @@ class LibraryPageState extends State<LibraryPage> {
                                   borderRadius: BorderRadius.circular(5),
                                   child: CachedNetworkImage(
                                     imageUrl: kitaplar["bookImage"],
-                                    height:
-                                        MediaQuery.of(context).size.height *
-                                            0.14,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.14,
                                     fit: BoxFit.cover,
                                     errorWidget: (context, url, error) =>
                                         Icon(Icons.error),
@@ -454,26 +457,30 @@ class LibraryPageState extends State<LibraryPage> {
                             textAlign: TextAlign.center,
                           ),
                           FutureBuilder(
-                                  future: puanHesapla(kitaplar["bookName"]),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Text(
-                                        "Puan: " + snapshot.data,
-                                        style: TextStyle(color: Colors.grey),
-                                      );
-                                    } else {
-                                      return SizedBox();
-                                    }
-                                  },
-                                ),
+                            future: puanHesapla(kitaplar["bookName"]),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                  "Puan: " + snapshot.data,
+                                  style: TextStyle(color: Colors.grey),
+                                );
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
                         ],
                       ),
                     ),
                   );
                 });
           } else {
-            return SizedBox();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),

@@ -12,9 +12,9 @@ Drawer drawerMenu(BuildContext context) {
   return Drawer(
     elevation: 0,
     child: Container(
-     decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [Color(0xFF202639),Color(0xFF3f4c77)])
-      ),
+      decoration: BoxDecoration(
+          gradient:
+              LinearGradient(colors: [Color(0xFF202639), Color(0xFF3f4c77)])),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -50,21 +50,21 @@ Drawer drawerMenu(BuildContext context) {
                   MaterialPageRoute(builder: (context) => DashboardPage()));
             },
           ),
-           ListTile(
+          ListTile(
             title: Text(
-              "Tüm Kitaplar",
+              "Kullanıcılar",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white,
               ),
             ),
             trailing: Icon(
-              FontAwesomeIcons.bookOpen,
+              FontAwesomeIcons.users,
               color: Colors.white,
             ),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AllBooks()));
+                  MaterialPageRoute(builder: (context) => UsersPage()));
             },
           ),
           ListTile(
@@ -84,21 +84,21 @@ Drawer drawerMenu(BuildContext context) {
                   MaterialPageRoute(builder: (context) => LibraryPage()));
             },
           ),
-           ListTile(
+          ListTile(
             title: Text(
-              "Kullanıcılar",
+              "Tüm Kitaplar",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white,
               ),
             ),
             trailing: Icon(
-              FontAwesomeIcons.users,
+              FontAwesomeIcons.bookOpen,
               color: Colors.white,
             ),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => UsersPage()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AllBooks()));
             },
           ),
           ListTile(

@@ -98,7 +98,9 @@ class _UsersPageState extends State<UsersPage> {
                     },
                   );
                 } else {
-                  return SizedBox();
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
               },
             ),

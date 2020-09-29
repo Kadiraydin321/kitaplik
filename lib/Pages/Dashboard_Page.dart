@@ -225,7 +225,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                         style: TextStyle(color: Colors.grey),
                                       );
                                     } else {
-                                      return SizedBox();
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
                                     }
                                   },
                                 ),
@@ -268,7 +270,9 @@ class _DashboardPageState extends State<DashboardPage> {
                 );
               });
         } else {
-          return SizedBox();
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
       },
     );
@@ -311,7 +315,9 @@ class _DashboardPageState extends State<DashboardPage> {
                   );
                 }
               } else {
-                return SizedBox();
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               }
             }));
   }

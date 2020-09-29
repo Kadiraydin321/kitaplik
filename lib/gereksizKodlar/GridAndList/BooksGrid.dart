@@ -124,7 +124,9 @@ class _GridBooksState extends State<GridBooks> {
                   );
                 });
           } else {
-            return SizedBox();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),

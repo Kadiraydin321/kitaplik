@@ -33,7 +33,9 @@ class CompilcatedImageDemo extends StatelessWidget {
                         ),
                         items: listele(context, kitap)));
               } else {
-                return SizedBox();
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               }
             }));
   }

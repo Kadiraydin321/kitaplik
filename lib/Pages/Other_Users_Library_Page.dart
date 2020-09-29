@@ -94,9 +94,14 @@ class _OtherLibraryPageState extends State<OtherLibraryPage> {
                       child: Column(
                         children: [
                           ClipOval(
-                              child: Image.network(user==null? "https://developers.google.com/web/images/contributors/no-photo.jpg": user["user_photo"],
-                                  width: 100, height: 100, fit: BoxFit.cover)),
-                          Text(user==null? "":user["user_name"],
+                              child: Image.network(
+                                  user == null
+                                      ? "https://developers.google.com/web/images/contributors/no-photo.jpg"
+                                      : user["user_photo"],
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover)),
+                          Text(user == null ? "" : user["user_name"],
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -342,7 +347,9 @@ class _OtherLibraryPageState extends State<OtherLibraryPage> {
                                           style: TextStyle(color: Colors.grey),
                                         );
                                       } else {
-                                        return SizedBox();
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
                                       }
                                     },
                                   ),
@@ -356,7 +363,9 @@ class _OtherLibraryPageState extends State<OtherLibraryPage> {
                   );
                 });
           } else {
-            return SizedBox();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),
@@ -405,8 +414,7 @@ class _OtherLibraryPageState extends State<OtherLibraryPage> {
                             borderRadius: BorderRadius.circular(5),
                             child: CachedNetworkImage(
                               imageUrl: kitaplar["bookImage"],
-                              height: MediaQuery.of(context).size.height *
-                                  0.14,
+                              height: MediaQuery.of(context).size.height * 0.14,
                               fit: BoxFit.cover,
                               errorWidget: (context, url, error) =>
                                   Icon(Icons.error),
@@ -450,7 +458,9 @@ class _OtherLibraryPageState extends State<OtherLibraryPage> {
                                   style: TextStyle(color: Colors.grey),
                                 );
                               } else {
-                                return SizedBox();
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
                               }
                             },
                           ),
@@ -460,7 +470,9 @@ class _OtherLibraryPageState extends State<OtherLibraryPage> {
                   );
                 });
           } else {
-            return SizedBox();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),

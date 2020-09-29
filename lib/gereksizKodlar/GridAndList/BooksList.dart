@@ -115,7 +115,9 @@ class _ListBooksState extends State<ListBooks> {
                   );
                 });
           } else {
-            return SizedBox();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),
