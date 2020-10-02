@@ -4,7 +4,7 @@
  
 # Kullandığım paketler:
  
- Firebase Paketleri
+ Firebase Paketleri \n
  firebase_auth: ^0.16.0
  cloud_firestore: ^0.13.5
  firebase_storage: ^3.1.5
