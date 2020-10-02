@@ -159,7 +159,7 @@ class _BookCommentsState extends State<BookComments> {
                                                           user["user_name"],
                                                           style: TextStyle(
                                                               color:
-                                                                  Colors.black,
+                                                                  Colors.white,
                                                               fontSize: 18),
                                                         ),
                                                         Padding(
@@ -174,7 +174,7 @@ class _BookCommentsState extends State<BookComments> {
                                                                     .toString()[0],
                                                             style: TextStyle(
                                                                 color: Colors
-                                                                    .black,
+                                                                    .white,
                                                                 fontSize: 18),
                                                           ),
                                                         ),
@@ -195,7 +195,7 @@ class _BookCommentsState extends State<BookComments> {
                                                         yorumlar["bookComment"],
                                                         style: TextStyle(
                                                             color:
-                                                                Colors.black54,
+                                                                Colors.black87,
                                                             fontSize: 18),
                                                       ),
                                                     ),
